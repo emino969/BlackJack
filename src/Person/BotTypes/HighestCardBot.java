@@ -1,5 +1,6 @@
 package Person.BotTypes;
 
+import CardGameExceptions.CardGameActionException;
 import CardGameExceptions.NoSuchCardException;
 import Cards.Card;
 import Cards.CardList;
@@ -7,6 +8,7 @@ import Cards.CardType;
 import GameListeners.GameListener;
 import Money.Pot;
 import Person.Person;
+import PokerRules.BlackJack.BlackJackAction;
 import PokerRules.Game;
 
 import java.util.Random;
@@ -23,11 +25,11 @@ public class HighestCardBot extends Person implements GameListener
     @Override public void turn() {
         this.bet(getBetAmount());
         try {
-            if(this.getHand().getCardByIndex(0).getCardIntValue() > 10) game.getActions().makeMove("Stand");
+            if(this.getHand().getCardByIndex(0).getCardIntValue() > 10) game.getActions().makeMove(BlackJackAction.STAND);
 	    else{
-		game.getActions().makeMove("Change card");
+		//game.getActions().makeMove("Change card");
 	    }
-        } catch (NoSuchCardException e) {
+        } catch (NoSuchCardException | CardGameActionException e) {
             e.printStackTrace();
         }
     }

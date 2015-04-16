@@ -1,11 +1,13 @@
 package PokerRules.BlackJack;
 
+import CardGameExceptions.CardGameActionException;
 import CardGameExceptions.NoSuchCardException;
 import Cards.Card;
 import Money.Pot;
 import Person.Person;
 import Person.PersonState;
 import PokerRules.CardGameMethods;
+import PokerRules.CardGameMove;
 import PokerRules.Game;
 
 import javax.swing.*;
@@ -39,56 +41,68 @@ public class BlackJack extends Game implements CardGameMethods
 		}
 	    }
 
-	    @Override public ArrayList<String> getOptions(Person person)	{
-		ArrayList<String> names = new ArrayList<String>();
+	    @Override public ArrayList<CardGameMove> getOptions(Person person)	{
+		ArrayList<CardGameMove> actions = new ArrayList<>();
 		if	(person.getHand().isEmpty()) {
-		    names.add("Bet 25$");
-		    names.add("Bet 50$");
-		    names.add("Bet 75$");
-		    names.add("Bet 100$");
+		    actions.add(BlackJackAction.BET_25);
+		    actions.add(BlackJackAction.BET_50);
+		    actions.add(BlackJackAction.BET_75);
 		}	else if (!person.isPersonState(PersonState.INACTIVE))	{
-		    names.add("Stand");
-		    names.add("Hit");
+		    actions.add(BlackJackAction.STAND);
+		    actions.add(BlackJackAction.HIT);
 
 		    if	(person.getHand().getSize() == 2) {
-			names.add("Double");
-			names.add("Surrender");
+			actions.add(BlackJackAction.DOUBLE);
+			actions.add(BlackJackAction.SURRENDER);
 		    }
 
 		    if	(isSplittable(person))	{
 			//names.add("Split");
 		    }
 		}
-		return names;
+		return actions;
 	    }
 
-	    @Override public void makeMove(String name)	{
-		if(name.equals("Stand"))	{
-		    stand();
-		}	else if(name.equals("Hit"))	{
-		    hit();
-		}	else if(name.equals("Bet 50$"))	{
-		    buyCards(getCurrentPlayer(), 50);
-		}	else if(name.equals("Bet 100$"))	{
-		    buyCards(getCurrentPlayer(), 100);
-		}	else if(name.equals("Bet 75$"))	{
-		    buyCards(getCurrentPlayer(), 75);
-		}	else if(name.equals("Bet 25$"))	{
-		    buyCards(getCurrentPlayer(), 25);
-		}	else if(name.equals("Double"))	{
-		    doubleDown();
-		}	else if(name.equals("Surrender"))	{
-		    surrender();
-		}	else if(name.equals("Split"))	{
-		    hit();
-		}	else if(name.equals("Double_hit")) {
-		    doubleDown();
-		}	else if(name.equals("Double_surrender")) {
-		    doubleDown();
-		}	else if(name.equals("Double_stand")){
-		    doubleDown();
-		}	else if (name.equals("Surrender_hit")){
-		    surrender();
+	  @Override  public void makeMove(CardGameMove blackJackAction) throws CardGameActionException {
+		switch((BlackJackAction)blackJackAction){
+		    case HIT:
+			hit();
+			break;
+		    case STAND:
+			stand();
+			break;
+		    case SURRENDER:
+			surrender();
+			break;
+		    case DOUBLE:
+			doubleDown();
+			break;
+		    case SPLIT:
+			hit();
+			break;
+		    case BET_25:
+			buyCards(currentPlayer, 25);
+			break;
+		    case BET_50:
+			buyCards(currentPlayer,50);
+			break;
+		    case BET_75:
+			buyCards(currentPlayer,75);
+			break;
+		    case DOUBLE_HIT:
+			doubleDown();
+			break;
+		    case DOUBLE_STAND:
+			doubleDown();
+			break;
+		    case DOUBLE_SURRENDER:
+			surrender();
+			break;
+		    case SURRENDER_HIT:
+			surrender();
+			break;
+		    default:
+			throw new CardGameActionException("there is no such action");
 		}
 	    }
 
@@ -115,7 +129,7 @@ public class BlackJack extends Game implements CardGameMethods
 
 	    @Override public void stand()	{
 		/** Do nothing */
-		currentPlayer.changePersonState(PersonState.WAITING);
+		currentPlayer.changePersonState(PersonState.INACTIVE);
 	    }
 
 	    @Override public void hit()	{
@@ -135,6 +149,11 @@ public class BlackJack extends Game implements CardGameMethods
 	setOptions(moves);
 	this.personMap = new HashMap<Person, BlackJackHand>();
 	this.personBets = new HashMap<Person, Integer>(); //Keeping track of every persons bet
+	setSuperGameType(this);
+    }
+
+    private void setSuperGameType(final BlackJack blackJack) {
+	super.gameType = blackJack;
     }
 
     private void buyCards(Person person, int amount)	{

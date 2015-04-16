@@ -8,8 +8,9 @@ import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Game extends Table
+public class Game  extends Table
 {
+    private Table table;
     protected Person currentPlayer;
     public Timer clockTimer;
     static private List<GameListener> ListenerArray;
@@ -95,4 +96,6 @@ public class Game extends Table
     public void addPlayer(Person player)	{}
 
     public void startGame()	{}
+
+
 }

@@ -1,7 +1,12 @@
 package Table;
 
 import Money.Pot;
-import Person.*;
+import Person.Dealer;
+import Person.Person;
+import Person.PersonState;
+import Person.Player;
+import PokerRules.BlackJack.BlackJackAction;
+import PokerRules.Game;
 
 import java.util.ArrayList;
 
@@ -10,6 +15,7 @@ public class Table
     protected ArrayList<Person> players;
     private Pot tablePot;
     protected Dealer dealer = null;
+    public Game gameType;
 
     public Table() {
 	this.players = new ArrayList<Person>();
@@ -82,5 +88,10 @@ public class Table
 
     public Pot getPot()	{
 	return tablePot;
+    }
+
+
+    public Class<BlackJackAction> getStateClass() {
+	return BlackJackAction.class;
     }
 }

@@ -1,12 +1,13 @@
 package PokerRules;
 
+import CardGameExceptions.CardGameActionException;
 import Person.Person;
 
 import java.util.ArrayList;
 
 public interface AbstractCardGameAction
 {
-    public ArrayList<String> getOptions(Person person);
-    public void makeMove(String name);
+    public ArrayList<CardGameMove> getOptions(Person person);
+    public void makeMove(CardGameMove cardGameMove) throws CardGameActionException;
     public String getHandValue(Person person);
 }

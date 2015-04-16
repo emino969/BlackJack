@@ -1,8 +1,10 @@
 package PokerRules.TexasHoldEm;
 
+import CardGameExceptions.CardGameActionException;
 import Money.Pot;
 import Person.Dealer;
 import Person.Person;
+import PokerRules.BlackJack.BlackJackAction;
 
 public class TexasDealer extends Dealer
 {
@@ -15,7 +17,11 @@ public class TexasDealer extends Dealer
     }
 
     @Override public void turn() {
-	game.getActions().makeMove("Call");
+	try {
+	    game.getActions().makeMove(BlackJackAction.HIT);
+	} catch (CardGameActionException e) {
+	    e.printStackTrace();
+	}
     }
 
     @Override public void giveStartingCards() {

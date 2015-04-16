@@ -1,5 +1,6 @@
 package Person.BotTypes;
 
+import CardGameExceptions.CardGameActionException;
 import CardGameExceptions.NoSuchCardException;
 import Cards.CardValue;
 import Money.Pot;
@@ -24,21 +25,27 @@ public class BlackJackBot extends Person
     @Override public void turn(){
         System.out.println(this.hasTurn());
         if(this.hasTurn()) {
-            AbstractCardGameAction aca = game.getActions();
-            if (hand.isEmpty()) {
-                aca.makeMove("Bet 25$");
-            }else{
-                BlackJackAction action = getBestMove();
-                System.out.println(action);
-                game.getActions().makeMove(action.toString());
+            try {
+                AbstractCardGameAction aca = game.getActions();
+                if (hand.isEmpty()) {
+                    aca.makeMove(BlackJackAction.BET_25);
+                } else {
+                    BlackJackAction action = getBestMove();
+                    System.out.println(action);
+                    game.getActions().makeMove(action);
+                }
+            } catch (CardGameActionException e) {
+                    e.printStackTrace();
+                }
             }
         }
-    }
+
 
     private BlackJackAction getBestMove() {
         boolean soft = !handIsHard();
         try {
             int dealerHandValue = blackjack.getVisableDealerCard().getCardIntValue();
+            if(10 < dealerHandValue ) dealerHandValue =10;
             int playerHandvalue = blackjack.getLegalHandSum(this);
             return getAction(dealerHandValue, playerHandvalue, soft);
         } catch (NoSuchCardException e) {

@@ -5,6 +5,7 @@ import Person.Person;
 import Person.PersonState;
 import Person.Player;
 import PokerRules.CardGameMethods;
+import PokerRules.CardGameMove;
 import PokerRules.Game;
 
 import javax.swing.*;
@@ -50,7 +51,7 @@ public class TexasHoldEm extends Game implements CardGameMethods
 		makeBet(currentPlayer, dealer.getMinimumBet());
 	    }
 
-	    @Override public ArrayList<String> getOptions(final Person person) {
+	    @Override public ArrayList<CardGameMove> getOptions(final Person person) {
 		ArrayList<String> options = new ArrayList<String>();
 		switch(person.getState()){
 		    case TURN:
@@ -76,11 +77,11 @@ public class TexasHoldEm extends Game implements CardGameMethods
 
 
 		}
-		return options;
+		return null;
 	    }
 
-	    @Override public void makeMove(final String name) {
-		System.out.println(name);
+	    @Override public void makeMove(final CardGameMove cardGameMove) {
+		String name = "hej";
 		switch (name) {
 		    case "Knock":
 			knock();

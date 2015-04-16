@@ -1,8 +1,11 @@
 package GUI;
 
+import CardGameExceptions.CardGameActionException;
 import GameListeners.GameListener;
 import Person.Player;
 import PokerRules.AbstractCardGameAction;
+import PokerRules.BlackJack.BlackJackAction;
+import PokerRules.CardGameMove;
 import PokerRules.Game;
 
 import javax.swing.*;
@@ -53,12 +56,16 @@ public class PlayerFrame extends JToolBar
     }
 
     public void updateOptions()	{
-	for (final String name : pokermoves.getOptions(player))	{
-	    JButton button = new JButton(name);
+	for (final CardGameMove cardGameMove : pokermoves.getOptions(player))	{
+	    JButton button = new JButton(cardGameMove.toString());
 	    button.addActionListener(new ActionListener() {
 		@Override public void actionPerformed(ActionEvent e) {
 		    if	(game.getPlayer().hasTurn()) {
-			pokermoves.makeMove(name);
+			try {
+			    pokermoves.makeMove(cardGameMove);
+			} catch (CardGameActionException e1) {
+			    e1.printStackTrace();
+			}
 			game.nextMove();
 			game.notifyListeners();
 			game.startClock();

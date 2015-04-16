@@ -1,5 +1,6 @@
 package PokerRules.BlackJack;
 
+import CardGameExceptions.CardGameActionException;
 import Money.Pot;
 import Person.Dealer;
 
@@ -19,14 +20,23 @@ public class BlackJackDealer extends Dealer
     }
 
     @Override public void turn() {
+	System.out.println("hej");
 	if (hand.isAllCardsVisible()) {
 	    if (hand.getSumAceOnTop() < 17) {
-		game.getActions().makeMove("Hit");
+		try {
+		    game.getActions().makeMove(BlackJackAction.HIT);
+		} catch (CardGameActionException e) {
+		    e.printStackTrace();
+		}
 	    } else {
-		game.getActions().makeMove("Stand");
+		try {
+		    game.getActions().makeMove(BlackJackAction.STAND);
+		} catch (CardGameActionException e) {
+		    e.printStackTrace();
+		}
 		game.setIsOver();
 	    }
-	}	else if(hand.getSize() == 2)	{
+	}else if(hand.getSize() == 2)	{
 	    hand.getCardByIndex(1).setVisible();
 	}
     }

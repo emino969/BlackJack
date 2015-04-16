@@ -1,14 +1,19 @@
 package PokerRules.BlackJack;
 
-public enum BlackJackAction
+import PokerRules.CardGameMove;
+
+public enum BlackJackAction implements CardGameMove
 {
     HIT,
     STAND,
     SPLIT,
     DOUBLE,
+    BET_25,
+    BET_50,
+    BET_75,
     DOUBLE_HIT,
-    DOUBLE_SURRENDER,
     DOUBLE_STAND,
+    DOUBLE_SURRENDER,
     SURRENDER,
     SURRENDER_HIT,;
 
