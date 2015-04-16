@@ -58,7 +58,7 @@ public class DealerComponent extends JComponent
         //g.fillOval(x, y, personRadius, personRadius);
         //g.setColor(BLACK);
         //g.drawString(dealer.getName(), x, y);
-       // addGolfCap(g ,x ,y); // this is essential to functionality of the dealer
+        addGolfCap(g ,x ,y); // this is essential to functionality of the dealer
 
     }
     private void addGolfCap(Graphics g, int x, int y){

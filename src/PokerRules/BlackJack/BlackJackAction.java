@@ -15,7 +15,7 @@ public enum BlackJackAction implements CardGameMove
     DOUBLE_STAND,
     DOUBLE_SURRENDER,
     SURRENDER,
-    SURRENDER_HIT,;
+    SURRENDER_HIT;
 
     @Override public String toString() {
         String string = super.toString();

@@ -1,7 +1,7 @@
 package GUI;
 
 import GUI.Components.DealerComponent;
-import GUI.Components.PlayerComponent;
+import GUI.Components.PersonComponent;
 import GUI.Components.TableComponent;
 import GameListeners.GameListener;
 import Person.Person;
@@ -36,9 +36,9 @@ public class PokerComponent extends JComponent
     }
 
     private TableComponent buildTableComponent() {
-	ArrayList<PlayerComponent> players = new ArrayList<PlayerComponent>();
+	ArrayList<PersonComponent> players = new ArrayList<PersonComponent>();
 	for (Person player : game.getOnlyPlayers()) {
-	    players.add(new PlayerComponent(player, imageHandler));
+	    players.add(new PersonComponent(player, imageHandler));
 	}
 	TableComponent table = new TableComponent(players, this,
 						  new DealerComponent(game.getDealer(), imageHandler),

@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 public class TableComponent extends JComponent
 {
-    private ArrayList<PlayerComponent> players;
+    private ArrayList<PersonComponent> players;
     private PokerComponent pokerComponent;
     private DealerComponent dealer;
     private int width, height;
@@ -17,7 +17,7 @@ public class TableComponent extends JComponent
     private Images imageHandler;
     private static final int BAR_SIZE = 20;
 
-    public TableComponent(final ArrayList<PlayerComponent> players, PokerComponent pokerComponent, final DealerComponent dealer, final int tableX,
+    public TableComponent(final ArrayList<PersonComponent> players, PokerComponent pokerComponent, final DealerComponent dealer, final int tableX,
 			  final int tableY, final int width, final int height, Images imageHandler)
     {
 	this.players = players;
@@ -30,7 +30,7 @@ public class TableComponent extends JComponent
 	this.imageHandler = imageHandler;
     }
 
-    public TableComponent(final ArrayList<PlayerComponent> players, final PokerComponent pokerComponent,
+    public TableComponent(final ArrayList<PersonComponent> players, final PokerComponent pokerComponent,
 			  final DealerComponent dealer, Images imageHandler)
     {
 	this.players = players;
@@ -48,7 +48,7 @@ public class TableComponent extends JComponent
 	int xPos = tableX + 100; //dealer needs some space dammit!
 	int yPos = tableY;
 	 */
-	for (PlayerComponent player : players) {
+	for (PersonComponent player : players) {
 	    yPos = getPrefferedYSeat(player);
 	    xPos = getPrefferedXSeat(player);
 	    player.drawPlayer(g, xPos, yPos, getTableSide(player));
@@ -69,7 +69,7 @@ public class TableComponent extends JComponent
 	//return width*2 + height; //dealer has one side to himself
     }
 
-    private int getPrefferedXSeat(PlayerComponent player)	{
+    private int getPrefferedXSeat(PersonComponent player)	{
 	int playerIndex = players.indexOf(player);
 	if	(playerIndex <= 2)	{
 	    return 120 + getSpace() * (playerIndex + 1);
@@ -80,7 +80,7 @@ public class TableComponent extends JComponent
 	}
     }
 
-    private int getPrefferedYSeat(PlayerComponent player)	{
+    private int getPrefferedYSeat(PersonComponent player)	{
 	int playerIndex = players.indexOf(player);
 	if	(playerIndex <= 2) {
 	    return tableY - player.getHeight() / 2;
@@ -91,7 +91,7 @@ public class TableComponent extends JComponent
 	}
     }
 
-    private TableSeat getTableSide(PlayerComponent player)	{
+    private TableSeat getTableSide(PersonComponent player)	{
 	if	(players.indexOf(player) <= 2)	{
 	    return TableSeat.FIRST_SIDE;
 	}	else if(players.indexOf(player) == 3)	{
@@ -99,6 +99,10 @@ public class TableComponent extends JComponent
 	}	else	{
 	    return TableSeat.THIRD_SIDE;
 	}
+    }
+
+    public void addToPokerComponent(final CardComponent cardComponent) {
+	this.add(cardComponent);
     }
 }
 

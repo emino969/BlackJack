@@ -1,6 +1,7 @@
 package Cards;
 
 import CardGameExceptions.NoSuchCardException;
+import GUI.Components.Clickable;
 import Pictures.Images;
 import javax.swing.*;
 import java.awt.*;
@@ -14,6 +15,7 @@ public class Card {
     private static final int STRING_SPACE_FROM_MIDDLE = CARD_SIZE_X / 2 - 20;
     private static final int FONT_SPACE = 15;
     private boolean isVisible;
+    private boolean clicked;
     private FontMetrics fm;
     private Font font;
 
@@ -168,4 +170,14 @@ public class Card {
 	return pixelLength;
     }
 
+    public boolean isClicked() {
+	return clicked;
+    }
+
+    public void setClicked(final boolean b) {
+	clicked = b;
+    }
+    public void clickAction() {
+           setClicked(!isClicked());
+       }
 }

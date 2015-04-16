@@ -5,11 +5,14 @@ import Person.*;
 import Pictures.Images;
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 
-public class PlayerComponent extends JComponent
+public class PersonComponent extends JComponent
 {
     private Person person;
+    private TableComponent tableComponent;
     private int xPos,yPos;
+    private ArrayList<CardListComponent> cardLists;
     private int personRadius = 50;
     private final static int cardSpaceX = 25; //The space between the cards on the table if there is more than 1 card per player
     private final static int cardSpaceY = 15;
@@ -22,7 +25,7 @@ public class PlayerComponent extends JComponent
     private int width, height;
     private String name;
 
-    public PlayerComponent(final Person person, Images imageHandler) {
+    public PersonComponent(final Person person, Images imageHandler) {
 	this.person = person;
 	this.imageHandler = imageHandler;
 	this.fm = getFontMetrics(new Font("Serif", Font.BOLD, 20));
@@ -35,14 +38,19 @@ public class PlayerComponent extends JComponent
 	this.ts = ts;
         y -= personRadius;
 
-	if	(person.getState().equals(PersonState.LOSER)) 	{
-	    g.setColor(Color.RED);
-	}	else if(person.hasTurn())	{
-            g.setColor(Color.YELLOW);
-	}	else if (person.getState().equals(PersonState.WINNER))	{
-	    g.setColor(Color.GREEN);
-	}	else	{
-	    g.setColor(Color.BLUE);
+	switch (person.getState()){
+	    case LOSER:
+		g.setColor(Color.RED);
+		break;
+	    case TURN:
+		g.setColor(Color.YELLOW);
+		break;
+	    case WINNER:
+		g.setColor(Color.GREEN);
+		break;
+	    default:
+		g.setColor(Color.BLUE);
+		break;
 	}
 
 	//MAKE BOXES WITH INFO
@@ -106,5 +114,9 @@ public class PlayerComponent extends JComponent
 		cl.getCardByIndex(i).draw((Graphics2D) g, x + i * cardSpaceX, y - 90, this, imageHandler);
 	    }
 	}
+    }
+
+    public void addToPokerComponent(final CardComponent cardComponent) {
+	tableComponent.addToPokerComponent(cardComponent);
     }
 }
