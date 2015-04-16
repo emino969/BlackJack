@@ -69,7 +69,7 @@ public class DealerComponent extends JComponent
     private void drawDeck(Graphics g, final int x, final int y) {
         g.setColor(Color.RED);
 	drawDealerCards(g, x, y); //A generalized solution for painting the cards
-        //g.fillRect(x + 50, y + 50, 20, 10); // deck is lightly beside Dealer, has size W/H 20,10
+        //g.fillRect(x + 50, y + 50, 20, 10); // deck is slightly beside Dealer, has size W/H 20,10
     }
     private void drawPot(Graphics g, final int x, final int y){
         g.setColor(BLACK);
@@ -77,8 +77,8 @@ public class DealerComponent extends JComponent
     }
 
     private void drawDealerCards(final Graphics g, int x, int y)	{
-	for (int i = 0; i < dealer.getHand().getSize(); i++) {
-	    dealer.getHand().getCardByIndex(i).draw((Graphics2D) g, x + i * cardSpaceX + 50, y, this, imageHandler);
+        for (int i = 0; i < dealer.getHand().getSize(); i++) {
+	    dealer.getHand().getCardByIndex(i).draw((Graphics2D) g, x + i*dealer.getCardSpace() * cardSpaceX + 50, y, this, imageHandler);
 	}
     }
 

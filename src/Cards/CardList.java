@@ -84,13 +84,13 @@ public class CardList
         }
     }
 
-    public Card popCard()   {//Named popCard because it also removes the card from the deck
+    public Card popCard()   { //Named popCard because it also removes the card from the deck
         Card card = cardList.get(0);
         removeCard(card);
         return card;
     }
 
-    public Card getCardByIndex(int index)	{
+    public Card getCardByIndex(int index) throws IndexOutOfBoundsException{
 	return cardList.get(index);
     }
 
@@ -141,4 +141,14 @@ public class CardList
         }
         return stringBuilder.toString();    }
 
+    public List<Card> getCardList() {
+        return cardList;
+    }
+
+    public boolean containsCardValue(final CardValue cardValue) {
+        for (Card card : cardList) {
+            if(card.getCardValue() == cardValue) return true;
+        }
+        return false;
+    }
 }

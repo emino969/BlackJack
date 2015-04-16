@@ -1,13 +1,13 @@
 package Person;
 
 import Money.Pot;
-import PokerRules.AbstractPokermoves;
+import PokerRules.AbstractCardGameAction;
 import GameListeners.GameListener;
 
 public class Player extends Person
 {
     public String nextMove;
-    private AbstractPokermoves moves = null;
+    private AbstractCardGameAction moves = null;
     private GameListener gl = null;
 
     public Player(String name, Pot pot) {
@@ -20,7 +20,7 @@ public class Player extends Person
     }
 
 
-    public AbstractPokermoves getOptions()	{
+    public AbstractCardGameAction getOptions()	{
 	return moves;
     }
 

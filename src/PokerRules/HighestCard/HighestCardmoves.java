@@ -1,8 +1,8 @@
 package PokerRules.HighestCard;
 
-import PokerRules.AbstractPokermoves;
+import PokerRules.AbstractCardGameAction;
 
-public interface HighestCardmoves extends AbstractPokermoves
+public interface HighestCardmoves extends AbstractCardGameAction
 {
     public void stand();
     public void changeCard();

@@ -3,7 +3,7 @@ package Person;
 import Cards.Card;
 import Cards.CardList;
 import Money.Pot;
-import Table.PokerGame;
+import PokerRules.Game;
 
 import java.util.ArrayList;
 
@@ -12,10 +12,11 @@ public class Person
     protected String name;
     protected Pot pot;
     protected CardList hand;
-    protected PokerGame game = null;
+    protected Game game = null;
     private PersonState state = PersonState.WAITING;
     private Pot defaultPot = new Pot(1000);
     protected ArrayList<CardList> multipleHands;
+    private int minimumBet;
 
     public Person(String name, Pot pot)	{
 	this.name = name;
@@ -84,7 +85,7 @@ public class Person
 	return hand.popCard();
     }
 
-    public void setGame(PokerGame game)	{
+    public void setGame(Game game)	{
 	this.game = game;
     }
 
@@ -116,7 +117,11 @@ public class Person
         return "";
     }
 
-    public boolean hasTurn() {
+    public boolean hasTurn( ) {
         return (state == PersonState.TURN);
+    }
+
+    public int getMinimumBet() {
+        return minimumBet;
     }
 }

@@ -1,8 +1,8 @@
 package PokerRules.BlackJack;
 
-import PokerRules.AbstractPokermoves;
+import PokerRules.AbstractCardGameAction;
 
-public interface BlackJackMoves extends AbstractPokermoves
+public interface BlackJackMoves extends AbstractCardGameAction
 {
     public void hit();
     public void stand();

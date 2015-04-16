@@ -3,7 +3,7 @@ package PokerRules.HighestCard;
 import Cards.Card;
 import Money.Pot;
 import Person.*;
-import Table.PokerGame;
+import PokerRules.Game;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -11,7 +11,7 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Comparator;
 
-public class HighestCard extends PokerGame
+public class HighestCard extends Game
 {
     private int rounds;
     private HighestCardmoves moves;
@@ -26,8 +26,9 @@ public class HighestCard extends PokerGame
 
  	    @Override public ArrayList<String> getOptions(Person person)	{
  		ArrayList<String> methods = new ArrayList<String>();
- 	    	methods.add("Stand");
- 	    	methods.add("Change card");
+		for (HighestCardAction method : HighestCardAction.values()) {
+		    methods.add(method.toString());
+		}
  	    	return methods;
  	    }
 
@@ -40,12 +41,14 @@ public class HighestCard extends PokerGame
  	    }
 
 	    @Override public void stand()	{
+		currentPlayer.changePersonState(PersonState.WAITING);
  	    }
 
  	    @Override public void changeCard()	{
  		Card card = getCurrentPlayer().popCard();
  	      	dealer.addCardToThrownCards(card);
  	      	getCurrentPlayer().addCard(dealer.popCard());
+		currentPlayer.changePersonState(PersonState.WAITING);
  	    }
  	};
  	setOptions(moves);

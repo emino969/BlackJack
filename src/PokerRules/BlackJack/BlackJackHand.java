@@ -5,5 +5,7 @@ public enum BlackJackHand
     THIN,
     BUSTED,
     BLACKJACK,
-    TWENTYONE
+    TWENTYONE;
+
+
 }

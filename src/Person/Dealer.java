@@ -8,6 +8,8 @@ public class Dealer extends Person
 {
     private CardList thrownCards, gameCards;
     private Pot tablePot;
+    private int minimumBet = 20;
+    private int cardSpace;
 
     public Dealer(Pot pot) {
 	super("Dealer", pot);
@@ -53,10 +55,25 @@ public class Dealer extends Person
 	    person.addCard(popCard());
 	}
     }
+    public void giveNCardsToPlayer(Person person, int N, boolean hidden)	{
+	for (int i = 0; i < N; i++) {
+            Card card = popCard();
+            if(person != game.getPlayer()) card.setNonVisible();
+	    person.addCard(card);
+	}
+    }
 
     @Override public Card popCard()	{
 	return gameCards.popCard();
     }
 
     public void giveStartingCards()	{}
+    public CardList getThrownCards(){
+        return thrownCards;
+    }
+
+    public int getCardSpace() {
+        cardSpace = 2;
+        return cardSpace;
+    }
 }

@@ -14,12 +14,16 @@ public class BlackJackDealer extends Dealer
  	hand.addHiddenCard(popCard());
     }
 
+    @Override public int getCardSpace() {
+	return 1;
+    }
+
     @Override public void turn() {
 	if (hand.isAllCardsVisible()) {
 	    if (hand.getSumAceOnTop() < 17) {
-		game.getOptions().makeMove("Hit");
+		game.getActions().makeMove("Hit");
 	    } else {
-		game.getOptions().makeMove("Stand");
+		game.getActions().makeMove("Stand");
 		game.setIsOver();
 	    }
 	}	else if(hand.getSize() == 2)	{

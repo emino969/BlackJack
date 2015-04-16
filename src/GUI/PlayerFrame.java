@@ -2,9 +2,9 @@ package GUI;
 
 import GameListeners.GameListener;
 import Person.Player;
-import PokerRules.AbstractPokermoves;
-import Table.PokerGame;
-import java.awt.*;
+import PokerRules.AbstractCardGameAction;
+import PokerRules.Game;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -12,19 +12,19 @@ import java.awt.event.ActionListener;
 public class PlayerFrame extends JToolBar
 {
     private Player player;
-    private AbstractPokermoves pokermoves;
+    private AbstractCardGameAction pokermoves;
     private JLabel nextMove, currentPot, handValue;
     //private JTextField betField;
-    private PokerGame game;
+    private Game game;
     private JPanel buttonPanel;
 
-    public PlayerFrame(final PokerGame game) {
+    public PlayerFrame(final Game game) {
 	this.game = game;
 	this.player = game.getPlayer();
 	this.currentPot = new JLabel("  Current pot:  " + player.getPot().getAmount() + "$  ");
 	//this.betField = new JTextField();
 	//betField.setMaximumSize(new Dimension(50, 100));
-	this.pokermoves = game.getOptions();
+	this.pokermoves = game.getActions();
 	this.handValue = new JLabel(pokermoves.getHandValue(player));
 	this.buttonPanel = new JPanel();
 	this.add(buttonPanel);
@@ -64,6 +64,7 @@ public class PlayerFrame extends JToolBar
 			game.startClock();
 		    }
 		}
+
 	    });
 	    buttonPanel.add(button);
     	}

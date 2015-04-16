@@ -1,9 +1,13 @@
 package PokerRules.BlackJack;
 
 import CardGameExceptions.NoSuchCardException;
+import Cards.Card;
 import Money.Pot;
-import Table.PokerGame;
-import Person.*;
+import Person.Person;
+import Person.PersonState;
+import PokerRules.CardGameMethods;
+import PokerRules.Game;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -11,7 +15,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class BlackJack extends PokerGame
+public class BlackJack extends Game implements CardGameMethods
 {
     private BlackJackMoves moves;
     private Map<Person, BlackJackHand> personMap;
@@ -59,33 +63,32 @@ public class BlackJack extends PokerGame
 	    }
 
 	    @Override public void makeMove(String name)	{
-		if	(name.equals("Stand"))	{
+		if(name.equals("Stand"))	{
 		    stand();
-		    currentPlayer.changePersonState(PersonState.INACTIVE);
 		}	else if(name.equals("Hit"))	{
 		    hit();
-		    currentPlayer.changePersonState(PersonState.WAITING);
 		}	else if(name.equals("Bet 50$"))	{
 		    buyCards(getCurrentPlayer(), 50);
-		    currentPlayer.changePersonState(PersonState.WAITING);
 		}	else if(name.equals("Bet 100$"))	{
 		    buyCards(getCurrentPlayer(), 100);
-		    currentPlayer.changePersonState(PersonState.WAITING);
 		}	else if(name.equals("Bet 75$"))	{
 		    buyCards(getCurrentPlayer(), 75);
-		    currentPlayer.changePersonState(PersonState.WAITING);
 		}	else if(name.equals("Bet 25$"))	{
 		    buyCards(getCurrentPlayer(), 25);
-		    currentPlayer.changePersonState(PersonState.WAITING);
 		}	else if(name.equals("Double"))	{
 		    doubleDown();
-		    currentPlayer.changePersonState(PersonState.INACTIVE);
 		}	else if(name.equals("Surrender"))	{
 		    surrender();
-		    currentPlayer.changePersonState(PersonState.LOSER);
 		}	else if(name.equals("Split"))	{
-		    split();
-		    currentPlayer.changePersonState(PersonState.WAITING);
+		    hit();
+		}	else if(name.equals("Double_hit")) {
+		    doubleDown();
+		}	else if(name.equals("Double_surrender")) {
+		    doubleDown();
+		}	else if(name.equals("Double_stand")){
+		    doubleDown();
+		}	else if (name.equals("Surrender_hit")){
+		    surrender();
 		}
 	    }
 
@@ -107,15 +110,18 @@ public class BlackJack extends PokerGame
 		dealer.addToPot(loss);
 		currentPlayer.addToPot(loss);
 		personBets.put(currentPlayer, 0);
+		currentPlayer.changePersonState(PersonState.LOSER);
 	    }
 
 	    @Override public void stand()	{
 		/** Do nothing */
+		currentPlayer.changePersonState(PersonState.WAITING);
 	    }
 
 	    @Override public void hit()	{
 		/** Add one card to player */
 		getCurrentPlayer().addCard(dealer.popCard());
+		currentPlayer.changePersonState(PersonState.WAITING);
 	    }
 
 	    @Override public void doubleDown()	{
@@ -134,9 +140,10 @@ public class BlackJack extends PokerGame
     private void buyCards(Person person, int amount)	{
 	makeBet(person, amount);
  	dealer.giveNCardsToPlayer(person, 2);
+	currentPlayer.changePersonState(PersonState.WAITING);
     }
 
-    private void makeBet(Person person, int amount)	{
+    @Override public void makeBet(Person person, int amount)	{
 	person.bet(amount);
 	if	(personBets.containsKey(person)) {
 	    int currentBettedPot = personBets.get(person);
@@ -146,7 +153,7 @@ public class BlackJack extends PokerGame
 	}
     }
 
-    private boolean isSplittable(Person person)	{
+    public boolean isSplittable(Person person)	{
 	if	(person.getHand().getSize() == 2) {
 	    try {
 		int firstCard = person.getHand().getCardByIndex(0).getCardIntValue();
@@ -169,12 +176,12 @@ public class BlackJack extends PokerGame
 	}
     }
 
-    private void getNextPlayer()	{
+    @Override public void getNextPlayer()	{
 	setCurrentPlayer(nextPerson());
 	notifyListeners();
     }
 
-    private Person nextPerson()	{
+    @Override public Person nextPerson()	{
 	if	(getActivePlayers().size() != 0) {
 	    if	(getActivePlayers().contains(currentPlayer)) {
 		return getPersonByIndex((currentPlayerIndex + 1) % getActivePlayers().size());
@@ -186,8 +193,9 @@ public class BlackJack extends PokerGame
 	}
     }
 
-    public void runGameForward()	{
+    @Override public void runGameForward()	{
 	/** Give next player the turn */
+	System.out.println(dealerIsInactive());
 	currentPlayer.turn();
 	updatePlayerState(currentPlayer);
 	if	(isOver())	{
@@ -222,7 +230,7 @@ public class BlackJack extends PokerGame
 	return true;
     }
 
-    private boolean isOver()	{
+    @Override public boolean isOver()	{
 	return (isEveryOneInactive() || isOverState);
     }
 
@@ -242,7 +250,7 @@ public class BlackJack extends PokerGame
 	}
     }
 
-    private int getLegalHandSum(Person person)	{
+    public int getLegalHandSum(Person person)	{
 	int minSum = person.getHand().getSumAceOnBottom();
 	int maxSum = person.getHand().getSumAceOnTop();
 	if	(maxSum <= 21)	{
@@ -251,12 +259,18 @@ public class BlackJack extends PokerGame
 	    return minSum;
 	}
     }
+    public Card getVisableDealerCard(){
+	for (Card card : dealer.getHand().getCardList()) {
+	    if(card.isVisible()) return card;
+	}
+	throw new RuntimeException("Dealer has no cards");
+    }
 
     public boolean isState(Person person, BlackJackHand st)	{
 	return personMap.get(person).equals(st);
     }
 
-    private void getWinner()	{
+    @Override public void getWinner()	{
 	isOverState = true;
 	for	(Person person : getOnlyPlayers())	{
 	    if	(checkVictoryOverDealer(person) && !person.isPersonState(PersonState.LOSER))	{
@@ -275,7 +289,7 @@ public class BlackJack extends PokerGame
 	}
     }
 
-    private void makeToWinner(Person person)	{
+    @Override public void makeToWinner(Person person)	{
 	int victoryAmount;
 	int bet = personBets.get(person);
 
@@ -293,13 +307,13 @@ public class BlackJack extends PokerGame
 	person.changePersonState(PersonState.WINNER);
     }
 
-    private void makeToLoser(Person person)	{
+    @Override public void makeToLoser(Person person)	{
 	int bet = personBets.get(person);
 	person.changePersonState(PersonState.LOSER);
 	dealer.giveAmountToPerson(dealer, bet);
     }
 
-    private void setStartingStates()	{
+    @Override public void setStartingStates()	{
 	for	(Person person : getOnlyPlayers())	{
 	    person.changePersonState(PersonState.WAITING);
 	    personMap.put(person, BlackJackHand.THIN);

@@ -44,15 +44,39 @@ public class Card {
         return cardType + " " + cardValue;
     }
 
-    public int getCardIntValue() throws NoSuchCardException {
-        int i = 1;
-        for (CardValue cardValue : CardValue.values()) {
-            if(cardValue == this.cardValue){
-                return i;
-            }
-            i ++;
-        }
-        throw new NoSuchCardException("There is no such Card");
+    public int getCardIntValue() throws NoSuchCardException{
+	switch (cardValue) {
+	    case BOTTOM_ACE:
+		return 1;
+	    case TWO:
+		return 2;
+	    case THREE:
+		return 3;
+	    case FOUR:
+		return 4;
+	    case FIVE:
+		return 5;
+	    case SIX:
+		return 6;
+	    case SEVEN:
+		return 7;
+	    case EIGHT:
+		return 8;
+	    case NINE:
+		return 9;
+	    case TEN:
+		return 10;
+	    case JACK:
+		return 11;
+	    case QUEEN:
+		return 12;
+	    case KING:
+		return 13;
+	    case TOP_ACE:
+		return 14;
+	    default:
+		throw new NoSuchCardException("There is no such card");
+	}
     }
 
     public void setNonVisible()	{
@@ -67,6 +91,10 @@ public class Card {
 	return isVisible;
     }
 
+    public CardValue getCardValue() {
+	return cardValue;
+    }
+
     private String getSymbolFromInt(int value)	{
 	if	(value <= 10)	{
 	    return String.valueOf(value);
@@ -74,6 +102,7 @@ public class Card {
 	    return "J";
 	}	else if(value == 12)	{
 	    return "Q";
+
 	}	else if(value == 13)	{
 	    return "K";
 	}	else if(value == 14)	{
@@ -113,9 +142,10 @@ public class Card {
 			    IMAGE_X,
 			    IMAGE_Y,
 			    comp);
+		if(getCardIntValue() == -1) throw new NoSuchCardException("There is no such card");
 
             }catch (NoSuchCardException e) {
-		System.out.println("There is no such card!");
+		e.printStackTrace();
 	    }
 
 	    Font newFont = new Font("Serif", Font.BOLD, 15);
@@ -137,4 +167,5 @@ public class Card {
 	}
 	return pixelLength;
     }
-    }
+
+}

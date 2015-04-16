@@ -6,14 +6,14 @@ import GUI.Components.TableComponent;
 import GameListeners.GameListener;
 import Person.Person;
 import Pictures.Images;
-import Table.PokerGame;
+import PokerRules.Game;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 
 public class PokerComponent extends JComponent
 {
-    private PokerGame game;
+    private Game game;
     private PokerFrame frame;
     private TableComponent tableComponent;
     private Images imageHandler;
@@ -21,7 +21,7 @@ public class PokerComponent extends JComponent
     private static final int Y_CONST = 90;
     private static final int ADJ_CONST = 50;
 
-    public PokerComponent(PokerGame game, PokerFrame frame)	{
+    public PokerComponent(Game game, PokerFrame frame)	{
 	this.game = game;
 	this.frame = frame;
 	this.tableComponent = buildTableComponent();
@@ -31,7 +31,7 @@ public class PokerComponent extends JComponent
 	    }
 	};
 
-	PokerGame.addGameListener(gl);
+	Game.addGameListener(gl);
 	this.imageHandler = new Images();
     }
 

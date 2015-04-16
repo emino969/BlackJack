@@ -1,9 +1,10 @@
 package PokerRules;
 
-import java.util.ArrayList;
-import Person.*;
+import Person.Person;
 
-public interface AbstractPokermoves
+import java.util.ArrayList;
+
+public interface AbstractCardGameAction
 {
     public ArrayList<String> getOptions(Person person);
     public void makeMove(String name);
